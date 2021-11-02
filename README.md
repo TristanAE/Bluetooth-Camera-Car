@@ -1,13 +1,12 @@
 # Bluetooth-Camera-Car
 Voiture télécommandée par Bluetooth avec un petit laser et caméra amovible.
-//https://www.aranacorp.com/fr/arduino-et-le-module-bluetooth-hc-06/
 
 # I-	Assemblage de la voiture
 
   A)	Assemblage du kit
   
 
-Utilisation d’un kit avec deux supports plastiques, quatre roues et moteurs, un support de pile et de la visserie. 	
+Utilisation d’un kit avec deux supports plastiques, quatre roues et deux moteurs, un support de pile et de la visserie. 	
 Assemblage selon la figure ci-dessous.
   
 ![Image2](https://user-images.githubusercontent.com/92324336/139718660-0ff360cb-2888-408b-87ac-ae516c1c5b0f.png)
@@ -24,7 +23,7 @@ Assemblage selon la figure ci-dessous.
 
 # II-	Initialisation des modules 
 
-  A)	Module Bluetooth 
+  A)	Module Bluetooth  //https://www.aranacorp.com/fr/arduino-et-le-module-bluetooth-hc-06/
   
 L’objectif n’est pas de connecter la voiture par wifi et de la contrôler sur Blynk, mais plutôt de privilégier une connexion par Bluetooth et de contrôler le véhicule avec une manette.
 Pour cela, nous avons besoin d’un module HC-05 (maitre et esclave)et d’un module HC-06(esclave). Il est aussi possible d’utiliser deux modules HC-05.
@@ -67,20 +66,15 @@ Lorsque les deux modules Bluetooth sont connectés, les lumières qu’ils émet
 
   2) Entrer en communication
 
-Lorsque les modules sont configurés, on peut débrancher la pin Key ou EN.
+Lorsque les modules sont configurés, on peut débrancher le pin Key ou EN.
 Pour le code master et esclave, nous utilisons la bibliothèque #include <SoftwareSerial.h> pour ajouter une communication série.
 Pour chacun, on déclare les pins Rx et Tx que l’on créé.
-Exemple : SoftwareSerial ArduinoMaster(12,14); On pensera à connecter ses pins sur l’inverse du module.
 
 On démarre la communication dans le setup
-Exemple ArduinoMaster.begin(9600);
 
 L’esclave reçoit des informations du maitre donc dès que celui-ci reçoit une donnée, il la lit et la traite :
-if (ArduinoMaster.available() >0) {
-     char c = ArduinoMaster.read()
      
-Le maître envoie des données selon des conditions:
-   ArduinoSlave.print('A');
+Le maître envoie des données selon des conditions.
   
 
 En résumé, l’Arduino envoie une information au module Bluetooth master issus de la manette grâce aux ports Rx Tx créés. Les deux modules étant configurés pour communiquer, le module slave reçoit l’information et la partage à son tour à la Nodemcu grâce au port Rx Tx créés également.
@@ -92,7 +86,7 @@ B)	Connection du MotorShied
     
 Nous possédons 4 moteurs mais uniquement deux ponts en H pour contrôler la vitesse et le sens des moteurs.
 Nous allons donc devoir dans le motorShield, brancher dans un emplacement deux moteurs.
-Pour pouvoir faire tourner le véhicule à gauche et a droite, les moteurs doivent être assemblé deux à deux du même côté.
+Pour pouvoir faire tourner le véhicule à gauche et a droite, les moteurs doivent être assemblés deux à deux du même côté.
 Pour alimenter les moteurs, on utilise un boitier de pile 6V que l’on branche selon l’image suivante :
 
 
@@ -101,15 +95,14 @@ Pour alimenter les moteurs, on utilise un boitier de pile 6V que l’on branche 
  
   2)	Les modules ajoutés
 
-Le module Bluetooth lié au MotorShield (l’esclave) est branché à la pin VIN pour avoir suffisamment de puissance, au ground et à un pin digital
+Le module Bluetooth lié au MotorShield (l’esclave) est branché au pin VIN pour avoir suffisamment de puissance, au ground et à un pin digital
 Le laser est branché au 3.3V et au ground.
-Les servomoteurs branchés chacun à un pin digital PWM, au Ground et à un VCC
+Les servomoteurs sont branchés chacun à un pin digital PWM, au Ground et à un VCC
 
   3)	La manette
   
 La manette est un Shield connecté directement à un Arduino et permet d’avoir directement un joystick et des boutons utilisables.
-Un module Bluetooth maitre est branché dessus et en fonction des valeurs de la manette, envoie des informations au module du motorShield 
-Pour connaitre les pins : https://www.google.com/search?q=joystick+shield+pinout&rlz=1C1CHBF_frFR911FR911&sxsrf=ALeKk02XzmC-Yngf9aDbZE6Xqd2bFflECQ%3A1623847269479&ei=ZfHJYN3gHISMa8f1gagO&oq=joystick+shield+&gs_lcp=Cgdnd3Mtd2l6EAEYBzIECCMQJzIECCMQJzIECCMQJzICCAAyAggAMgUIABDLATIFCAAQywEyBQgAEMsBMgUIABDLATIFCAAQywFQripYripg0EdoAHABeACAAWmIAYwCkgEDMi4xmAEAoAEBqgEHZ3dzLXdpesABAQ&sclient=gws-wiz 
+Un module Bluetooth maitre est branché dessus et en fonction des valeurs de la manette, envoie des informations au module du motorShield.
 
 
  ![Image4](https://user-images.githubusercontent.com/92324336/139719004-9611d1cf-ad13-4df8-b5bd-ea5e005d1385.jpg)
@@ -136,7 +129,7 @@ De même, une autre information sera envoyée si le bouton est de nouveau longte
 B)	Réception des données module esclave
 
 Tous les éléments sont contrôlés par le module esclave qui reçoit les information du master. 
-On regarde tout d’abord si le port reçoit une information puis on réalise un switch pour chaque élément activable :
+On regarde tout d’abord si le port reçoit une information puis on réalise un switch pour chaque élément activable.
 
   1)	Déclenchement des moteurs
 
